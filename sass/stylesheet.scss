@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+@import "./minireset.scss";
+@import "./marquee.scss";
+@import "./colors.scss";
+
+@font-face {
+  font-family: 'Roobert Regular';
+  src: url("https://brand.twitch.tv/assets/fonts/roobert/Roobert-Regular.otf") format("opentype");
+}
+
+body {
+  overflow-x: hidden;
+  font-family: 'Roobert Regular', 'Roboto', sans-serif;
+  background-color: #00b140;
+}

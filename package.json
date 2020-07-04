@@ -1,12 +1,12 @@
 {
   "name": "perplex-chat",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Wild Chat Remake",
-  "main": "dist/index.ts",
+  "main": "dist/index.html",
   "scripts": {
-    "start": "parcel serve ./src/index.html",
-    "build": "parcel build ./src/index.html",
+    "start": "npm run css-build && parcel build src/index.html",
+    "css-build": "node-sass sass/stylesheet.scss src/stylesheet.css --output-style compressed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Karar Al-Remahy",
@@ -20,11 +20,12 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "typescript": "^3.9.6",
     "parcel": "^2.0.0-beta.1"
   },
   "dependencies": {
     "dank-twitch-irc": "^3.3.0",
-    "typescript": "^3.9.6",
+    "node-sass": "^4.14.1",
     "uhtml": "^2.0.1"
   }
 }
