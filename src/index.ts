@@ -1,20 +1,23 @@
 import { html } from 'uhtml'
 import { ChatClient } from 'dank-twitch-irc'
-import Chance from 'chance'
+import Twister from './mersenne-twister'
 
 // This is a "Proof of Concept".
 
 const urlParams = new URLSearchParams(window.location.search)
 
 class Random {
-  private chance: Chance.Chance
+  private twister: Twister
 
-  constructor (seed: Chance.Seed) {
-    this.chance = new Chance(seed)
+  constructor (seed: number) {
+    this.twister = new Twister(seed)
   }
 
   number = (min: number, max: number) => {
-    return this.chance.integer({ min, max: (max - 1) })
+    max--
+    const rnd = this.twister.random()
+    const floored = Math.floor(rnd * (max - min + 1) + min)
+    return floored
   }
 
   size = () => {
@@ -56,9 +59,6 @@ class Random {
     return durations[this.number(0, durations.length)]
   }
 }
-
-const today = new Date()
-const random = new Random(today.getUTCFullYear() + today.getUTCMonth() + today.getUTCDate())
 
 const escapeRegExp = (text: string) => {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
@@ -118,12 +118,15 @@ client.on('PRIVMSG', msg => {
 
   const parent = document.getElementById('perplexchat').querySelector('.marquee')
 
-  const { size, color, direction, y, duration } = random
+  const date = msg.serverTimestamp
+  const seededRandom = new Random(date.getTime())
+
+  const { size, color, direction, y, duration, number: rNumber } = seededRandom
   const sSize = size()
 
   const words = msg.messageText.split(' ')
 
-  const node = html.node`<span data-message="${msg.messageID}" data-user="${msg.senderUsername}" class="${`message ${direction()} ${duration()} ${color()}`}" onanimationend="${ev => { ev.currentTarget.outerHTML = '' }}" style="${`top:${y(sSize.px)}px;font-size:${sSize.rem};height:${sSize.rem};`}"></span>`
+  const node = html.node`<p data-message="${msg.messageID}" data-user="${msg.senderUsername}" class="${`message ${direction()} ${duration()} ${color()}`}" onanimationend="${ev => { ev.currentTarget.outerHTML = '' }}" style="${`top:${y(sSize.px)}px;font-size:${sSize.rem};height:${sSize.rem};`}"></p>`
 
   let message = msg.messageText
 
@@ -132,7 +135,7 @@ client.on('PRIVMSG', msg => {
   // Replace Twitch emotes with placeholders
   for (let index = 0; index < msg.emotes.length; index++) {
     const emote = msg.emotes[index]
-    const timestamp = String(Date.now() + random.number(1, 10))
+    const timestamp = String(Date.now() + rNumber(1, 10))
 
     const regex = new RegExp(`${escapeRegExp(msg.messageText.substring(emote.startIndex, emote.endIndex))}`)
     message = message.replace(regex, `-@${timestamp}-`)
@@ -142,17 +145,17 @@ client.on('PRIVMSG', msg => {
     })
   }
 
-  // Replace emotes with placeholders
+  // Replace FFZ & BTTV emotes with placeholders
   for (let index = 0; index < words.length; index++) {
     const word = words[index]
 
     const matchesFFZ = ffzEmotes.find(emote => emote.name === word)
     const matchesBTTV = bttvEmotes.find(emote => emote.code === word)
 
-    const timestamp = String(Date.now() + random.number(1, 10))
+    const timestamp = String(Date.now() + rNumber(1, 10))
     if (matchesFFZ !== undefined) {
       const regex = new RegExp(`${escapeRegExp(word)}`)
-      const emoteUrls = Object.values(matchesFFZ.urls)
+      const emoteUrls = Object.keys(matchesFFZ.urls).map(key => matchesFFZ.urls[key])
       message = message.replace(regex, `-@${timestamp}-`)
       placeholders.push({
         timestamp,
@@ -176,7 +179,7 @@ client.on('PRIVMSG', msg => {
     const match = emoteMatch[index]
     const placeholderMatch = placeholders.find(placeholder => placeholder.timestamp === match.replace(/[^0-9]/g, ''))
 
-    const htmlString = `<figure style="height:${sSize.rem};width:${sSize.rem};"><img src="${placeholderMatch.url}"/></figure>`
+    const htmlString = `<img src="${placeholderMatch.url}"/>`
     node.innerHTML = node.innerHTML.replace(match, htmlString)
   }
 

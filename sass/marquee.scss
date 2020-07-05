@@ -1,5 +1,5 @@
-.marquee span {
-  text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+.marquee p {
+  text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
   position: absolute;
   display: flex;
   align-items: center;
@@ -7,47 +7,44 @@
   will-change: transform;
 }
 
-.marquee span figure img {
-  max-width: 100%;
-  vertical-align: top;
-}
-
-.marquee span > * {
-  text-align: center;
-  vertical-align: middle;
+.marquee img {
+  width: auto;
+  height: 100%;
+  max-width: none;
+  padding-left: 5px;
 }
 
 .marquee:hover {
   animation-play-state: paused
 }
 
-.marquee span.right {
+.marquee .right {
   padding-left: 100%;
   animation: marqueeRight 30s linear 1;
 }
 
-.marquee span.left {
+.marquee .left {
   padding-left: 100%;
   animation: marqueeLeft 30s linear 1;
 }
 
-.marquee span.faster {
+.marquee .faster {
   animation-duration: 10s;
 }
 
-.marquee span.fast {
+.marquee .fast {
   animation-duration: 15s;
 }
 
-.marquee span.normal {
+.marquee .normal {
   animation-duration: 20s;
 }
 
-.marquee span.slow {
+.marquee .slow {
   animation-duration: 25s;
 }
 
-.marquee span.slower {
+.marquee .slower {
   animation-duration: 30s;
 }
 
