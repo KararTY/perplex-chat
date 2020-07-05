@@ -5,7 +5,7 @@
   "description": "Wild Chat Remake",
   "main": "dist/index.html",
   "scripts": {
-    "start": "npm run css-build && parcel build src/index.html",
+    "start": "cd ./dist && del /S * /Q && cd .. && npm run css-build && parcel build src/index.html",
     "css-build": "node-sass sass/stylesheet.scss src/stylesheet.css --output-style compressed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,11 +20,13 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "typescript": "^3.9.6",
-    "parcel": "^2.0.0-beta.1"
+    "parcel": "^2.0.0-beta.1",
+    "typescript": "^3.9.6"
   },
   "dependencies": {
-    "dank-twitch-irc": "^3.3.0",
+    "@types/chance": "^1.1.0",
+    "chance": "^1.1.6",
+    "dank-twitch-irc": "kararty/dank-twitch-irc",
     "node-sass": "^4.14.1",
     "uhtml": "^2.0.1"
   }

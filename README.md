@@ -12,6 +12,7 @@ Browse to https://alremahy.com/perplex-chat.html?channel=harmfulopinions, enter 
 In no particular order:
   * [dank-twitch-irc](https://github.com/robotty/dank-twitch-irc) for retrieving Twitch messages.
   * [uHTML](https://github.com/WebReflection/uhtml) for rendering HTML templates.
+  * [Chance](https://github.com/chancejs/chancejs) for seeded randomization.
   * [node-sass](https://github.com/sass/node-sass) for easy stylesheet management.
   * [Parcel 2](https://github.com/parcel-bundler/parcel/) for packing the files for use in the browser.
 

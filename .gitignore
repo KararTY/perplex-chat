@@ -1,8 +1,10 @@
 # Distribution files
-dist/
+dist/**
 
 # Parcel 2 cache
 .parcel-cache/
 
 # NodeJS modules
 node_modules/
+
+.env
