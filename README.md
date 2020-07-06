@@ -12,15 +12,16 @@ Browse to https://alremahy.com/perplex-chat.html?channel=harmfulopinions, enter 
 In no particular order:
   * [dank-twitch-irc](https://github.com/robotty/dank-twitch-irc) for retrieving Twitch messages.
   * [uHTML](https://github.com/WebReflection/uhtml) for rendering HTML templates.
-  * [Chance](https://github.com/chancejs/chancejs) for seeded randomization.
-  * [node-sass](https://github.com/sass/node-sass) for easy stylesheet management.
+  * [Mersenne Twister](https://gist.github.com/banksean/300494) for seeded randomization.
+  * [node-sass](https://github.com/sass/node-sass) for stylesheet management.
   * [Parcel 2](https://github.com/parcel-bundler/parcel/) for packing the files for use in the browser.
 
 ### How to build it yourself
-  * Make sure you have NodeJS (Latest LTS works)
-  * `npm i` to install modules.
-  * `npm start` to build it.
-  * You can now host the `/dist` folder wherever you'd like or you can try it out locally with python3:
+  1. Make sure you have NodeJS (Latest LTS works).
+  2. `npm i` to install modules.
+  3. `npm start` to build it.
+  4. You can now host the contents of the `/dist` folder wherever you'd like.
+  * For testing purposes you can try it out locally with python3:
     * `cd ./dist && python -m http.server`
-
+ 
 Thanks to Twitch users `@idmgroup` & `@miaam` for the idea & inspiration.
