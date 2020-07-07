@@ -2,14 +2,15 @@
 ## Remake of Wild Chat
 
 ### What it does
-A chat message gets a random color, font size, speed and direction (Comes in from the left or right).
-The message then gets assigned a random Y position, and starts the animation.
+<p align="center">
+  <img src="./Example.png"/>
+  <br>A normal Twitch chat.
+</p>
 
 ### How to try it out
 Browse to https://alremahy.com/perplex-chat.html?channel=harmfulopinions, enter a chat name and watch the magic happen.
 
 ### What it uses
-In no particular order:
   * [dank-twitch-irc](https://github.com/robotty/dank-twitch-irc) for retrieving Twitch messages.
   * [uHTML](https://github.com/WebReflection/uhtml) for rendering HTML templates.
   * [Mersenne Twister](https://gist.github.com/banksean/300494) for seeded randomization.

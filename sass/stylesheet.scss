@@ -9,11 +9,14 @@
   src: url("../font/Roobert-Regular.woff2") format("woff2");
 }
 
-html {
-  overflow: hidden;
-}
-
 body {
   font-family: 'Roobert Regular', 'Roobert', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 0;
+}
+
+#perplexchat {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
