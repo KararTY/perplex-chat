@@ -23,5 +23,12 @@ In no particular order:
   4. You can now host the contents of the `/dist` folder wherever you'd like.
   * For testing purposes you can try it out locally with python3:
     * `cd ./dist && python -m http.server`
- 
+
+### Ideas for the future
+  * Settings modal:
+    * Background color
+    * Font changer (?)
+    * Disable emotes (Twitch, BTTV, FFZ)
+    * Change font sizes.
+
 Thanks to Twitch users `@idmgroup` & `@miaam` for the idea & inspiration.
