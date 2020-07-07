@@ -26,9 +26,10 @@ In no particular order:
 
 ### Ideas for the future
   * Settings modal:
-    * Background color
-    * Font changer (?)
-    * Disable emotes (Twitch, BTTV, FFZ)
+    * Background color.
+    * Font changer (?).
+    * Enable / Disable emotes (Twitch, BTTV, FFZ).
     * Change font sizes.
+    * Enable / Disable AutoMod filter (IDENTITY, AGGRESSIVE, SEXUAL, PROFANITY).
 
 Thanks to Twitch users `@idmgroup` & `@miaam` for the idea & inspiration.

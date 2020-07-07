@@ -1,6 +1,7 @@
 import { html } from 'uhtml'
 import { ChatClient } from 'dank-twitch-irc'
 import Random from './random'
+import autoModCheck from './automod'
 
 // This is a "Proof of Concept".
 
@@ -67,6 +68,16 @@ client.on('PRIVMSG', msg => {
     return
   }
 
+  let message = msg.messageText
+
+  const wordsToCensor = autoModCheck(msg.ircTags.flags, msg.messageText)
+
+  for (let index = 0; index < wordsToCensor.length; index++) {
+    const word = wordsToCensor[index].WORD
+    const censorStars = Array(word.length).fill('*').join('')
+    message = message.replace(new RegExp(word), censorStars)
+  }
+
   const parent = document.getElementById('perplexchat').querySelector('.marquee')
 
   const date = msg.serverTimestamp
@@ -78,8 +89,6 @@ client.on('PRIVMSG', msg => {
   const words = msg.messageText.split(' ')
 
   const node = html.node`<p data-message="${msg.messageID}" data-user="${msg.senderUsername}" class="${`message ${direction()} ${duration()} ${color()}`}" onanimationend="${ev => { ev.currentTarget.outerHTML = '' }}" style="${`top:${y(sSize.px)}px;font-size:${sSize.rem};height:${sSize.rem};`}"></p>`
-
-  let message = msg.messageText
 
   const placeholders = []
 
