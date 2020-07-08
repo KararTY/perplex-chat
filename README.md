@@ -8,7 +8,7 @@
 </p>
 
 ### How to try it out
-Browse to https://alremahy.com/perplex-chat.html?channel=harmfulopinions, and watch the magic happen. Change the `?channel=` part of the url to see other chatrooms.
+Browse to https://alremahy.com/perplex-chat.html?channel=harmfulopinions, and watch the magic happen. Change the `?channel=<channel_name_goes_here>` part of the url to see other chatrooms.
 
 ### What it uses
   * [dank-twitch-irc](https://github.com/robotty/dank-twitch-irc) for retrieving Twitch messages.
