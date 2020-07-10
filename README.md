@@ -21,10 +21,10 @@ By changing the `?channel=<channel_name_goes_here>` part of the url, you connect
 ### How to build it yourself
   1. Make sure you have NodeJS (Latest LTS works).
   2. `npm i` to install modules.
-  3. `npm start` to build it.
+  3. `npm build` to build it.
   4. You can now host the contents of the `/dist` folder wherever you'd like.
   * For testing purposes you can try it out locally with python3:
-    * `cd ./dist && python -m http.server`
+    * `npm run python3-http-server`
 
 ### Ideas for the future
   * Settings modal:
