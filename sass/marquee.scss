@@ -11,7 +11,13 @@
   width: auto;
   height: 100%;
   max-width: none;
+  padding-right: 5px;
   padding-left: 5px;
+}
+
+// This is just a placeholder fix.
+.marquee img + img{
+  padding-right: 0;
 }
 
 .marquee:hover {

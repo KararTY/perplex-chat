@@ -1,7 +1,6 @@
 import { html } from 'uhtml'
 import { ChatClient } from 'dank-twitch-irc'
 import Random from './random'
-import autoModCheck from './automod'
 
 // This is a "Proof of Concept".
 
@@ -69,16 +68,6 @@ client.on('PRIVMSG', msg => {
       return
     }
 
-    let message = msg.messageText
-
-    const wordsToCensor = autoModCheck(msg.ircTags.flags, msg.messageText)
-
-    for (let index = 0; index < wordsToCensor.length; index++) {
-      const word = wordsToCensor[index].WORD
-      const censorStars = Array(word.length).fill('*').join('')
-      message = message.replace(new RegExp(escapeRegExp(word)), censorStars)
-    }
-
     const parent = document.getElementById('perplexchat').querySelector('.marquee')
 
     const date = msg.serverTimestamp
@@ -89,59 +78,35 @@ client.on('PRIVMSG', msg => {
 
     const words = msg.messageText.split(' ')
 
-    const node = html.node`<p data-message="${msg.messageID}" data-user="${msg.senderUsername}" class="${`message ${direction()} ${duration()} ${color()}`}" onanimationend="${ev => { ev.currentTarget.outerHTML = '' }}" style="${`top:${y(sSize.px)}px;font-size:${sSize.rem};height:${sSize.rem};`}"></p>`
+    const node = html.node`<p data-message="${msg.messageID}" data-user="${msg.senderUsername}" class="${`message ${direction()} ${duration()} ${color()}`}" onanimationend="${ev => { ev.currentTarget.outerHTML = '' }}" style="${`top:${y(sSize.px)}px;font-size:${sSize.rem};height:${sSize.rem};`}">${msg.messageText}</p>`
 
-    const placeholders = []
-
-    // Replace Twitch emotes with placeholders
-    for (let index = 0; index < msg.emotes.length; index++) {
-      const emote = msg.emotes[index]
-      const string = String(placeholders.length)
-
-      const regex = new RegExp(escapeRegExp(msg.messageText.substring(emote.startIndex, emote.endIndex)))
-      message = message.replace(regex, `-@${string}-`)
-      placeholders.push({
-        string,
-        url: `//static-cdn.jtvnw.net/emoticons/v1/${emote.id}/3.0`
-      })
-    }
-
-    // Replace FFZ & BTTV emotes with placeholders
+    // Replace emotes with placeholders
     for (let index = 0; index < words.length; index++) {
       const word = words[index]
 
+      let url: string
+      const regex = new RegExp(escapeRegExp(word))
+
+      const matchesFlags = msg.flags.find(flag => flag.word === word)
+      const matchesTwitch = msg.emotes.find(emote => emote.code === word)
       const matchesFFZ = ffzEmotes.find(emote => emote.name === word)
       const matchesBTTV = bttvEmotes.find(emote => emote.code === word)
 
-      const string = String(placeholders.length)
-      if (matchesFFZ !== undefined) {
-        const regex = new RegExp(escapeRegExp(word))
+      if (matchesFlags !== undefined) {
+        const censorStars = Array(word.length).fill('*').join('')
+        node.innerHTML = node.innerHTML.replace(new RegExp(escapeRegExp(word)), censorStars)
+      } else if (matchesTwitch !== undefined) {
+        url = `//static-cdn.jtvnw.net/emoticons/v1/${matchesTwitch.id}/3.0`
+      } else if (matchesFFZ !== undefined) {
         const emoteUrls = Object.keys(matchesFFZ.urls).map(key => matchesFFZ.urls[key])
-        message = message.replace(regex, `-@${string}-`)
-        placeholders.push({
-          string,
-          url: emoteUrls[emoteUrls.length - 1]
-        })
+        url = emoteUrls[emoteUrls.length - 1]
       } else if (matchesBTTV !== undefined) {
-        const regex = new RegExp(escapeRegExp(word))
-        const emoteUrl = `//cdn.betterttv.net/emote/${matchesBTTV.id}/3x`
-        message = message.replace(regex, `-@${string}-`)
-        placeholders.push({
-          string,
-          url: emoteUrl
-        })
+        url = `//cdn.betterttv.net/emote/${matchesBTTV.id}/3x`
       }
-    }
 
-    node.innerHTML = message
-
-    const emoteMatch = message.match(/-@[0-9]+-/g)
-    for (let index = 0; index < (emoteMatch ? emoteMatch.length : 0); index++) {
-      const match = emoteMatch[index]
-      const placeholderMatch = placeholders.find(placeholder => placeholder.string === match.replace(/[^0-9]/g, ''))
-
-      const htmlString = `<img src="${placeholderMatch.url}"/>`
-      node.innerHTML = node.innerHTML.replace(match, htmlString)
+      if (url) {
+        node.innerHTML = node.innerHTML.replace(regex, `<img src="${url}"/>`)
+      }
     }
 
     parent.append(node)
@@ -154,7 +119,8 @@ function deleteMessage (ev) {
   if (ev.wasChatCleared && ev.wasChatCleared()) {
     document.querySelector('.marquee').innerHTML = ''
   } else if (ev.targetMessageID) {
-    document.querySelector(`[data-message="${ev.targetMessageID}"]`).outerHTML = ''
+    const node = document.querySelector(`[data-message="${ev.targetMessageID}"]`)
+    if (node !== null) node.outerHTML = ''
   } else if (ev.targetUsername) {
     document.querySelectorAll(`[data-user="${ev.targetUsername}"`).forEach(el => {
       el.outerHTML = ''
