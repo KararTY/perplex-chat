@@ -87,15 +87,11 @@ client.on('PRIVMSG', msg => {
       let url: string
       const regex = new RegExp(escapeRegExp(word))
 
-      const matchesFlags = msg.flags.find(flag => flag.word === word)
       const matchesTwitch = msg.emotes.find(emote => emote.code === word)
       const matchesFFZ = ffzEmotes.find(emote => emote.name === word)
       const matchesBTTV = bttvEmotes.find(emote => emote.code === word)
 
-      if (matchesFlags !== undefined) {
-        const censorStars = Array(word.length).fill('*').join('')
-        node.innerHTML = node.innerHTML.replace(new RegExp(escapeRegExp(word)), censorStars)
-      } else if (matchesTwitch !== undefined) {
+      if (matchesTwitch !== undefined) {
         url = `//static-cdn.jtvnw.net/emoticons/v1/${matchesTwitch.id}/3.0`
       } else if (matchesFFZ !== undefined) {
         const emoteUrls = Object.keys(matchesFFZ.urls).map(key => matchesFFZ.urls[key])
@@ -107,6 +103,13 @@ client.on('PRIVMSG', msg => {
       if (url) {
         node.innerHTML = node.innerHTML.replace(regex, `<img src="${url}"/>`)
       }
+    }
+
+    // Filter bad words.
+    for (let index = 0; index < msg.flags.length; index++) {
+      const word = msg.flags[index].word
+      const censorStars = Array(word.length).fill('*').join('')
+      node.innerHTML = node.innerHTML.replace(new RegExp(escapeRegExp(word)), censorStars)
     }
 
     parent.append(node)
