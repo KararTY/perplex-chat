@@ -1,10 +1,28 @@
-.marquee p {
-  text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
+.marquee > div {
+  text-shadow:
+    -1px -1px 0 rgba(0, 0, 0, 0.2),
+    1px -1px 0 rgba(0, 0, 0, 0.2),
+    -1px 1px 0 rgba(0, 0, 0, 0.2),
+    1px 1px 0 rgba(0, 0, 0, 0.2);
   position: absolute;
   display: flex;
   align-items: center;
   white-space: nowrap;
   will-change: transform;
+}
+
+.marquee > div p.rainbow {
+  font-weight: bolder;
+  -webkit-text-stroke: unset;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.2),
+    1px 2px 0 rgba(0, 0, 0, 0.2),
+    2px 1px 0 rgba(0, 0, 0, 0.2),
+    1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.marquee > div p:not(.rainbow) {
+  -webkit-text-stroke: 0.5px black;
 }
 
 .marquee img {

@@ -7,6 +7,7 @@ export default class Random {
     this.twister = new Twister(seed)
   }
 
+  /** min inclusive, max exclusive */
   number = (min: number, max: number) => {
     max--
     const rnd = this.twister.random()
@@ -14,15 +15,9 @@ export default class Random {
     return floored
   }
 
-  size = () => {
-    const sizes = [
-      { rem: '1rem', px: 16 },
-      { rem: '1.5rem', px: 24 },
-      { rem: '2rem', px: 32 },
-      { rem: '2.5rem', px: 40 },
-      { rem: '3rem', px: 48 }
-    ]
-    return sizes[this.number(0, sizes.length)]
+  size = (userstate = false) => {
+    const sizes = [1, 1.5, 2, 2.5, 3]
+    return userstate ? sizes[sizes.length - 1] : sizes[this.number(0, sizes.length - 1)]
   }
 
   color = () => {
@@ -41,15 +36,15 @@ export default class Random {
 
   y = (fontSize: number) => {
     let innerHeight = this.number(0, window.innerHeight)
-    const maximumHeight = window.innerHeight - fontSize
+    const maximumHeight = window.innerHeight - (fontSize * 16)
     if (innerHeight >= maximumHeight) {
-      innerHeight -= fontSize
+      innerHeight -= (fontSize * 16)
     }
     return innerHeight
   }
 
-  duration = () => {
+  duration = (userstate = false) => {
     const durations = ['slower', 'slow', 'normal', 'fast', 'faster']
-    return durations[this.number(0, durations.length)]
+    return userstate ? durations[0] : durations[this.number(0, durations.length)]
   }
 }

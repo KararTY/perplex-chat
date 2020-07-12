@@ -66,3 +66,33 @@
 .transparency {
   background-color: rgba(0, 0, 0, 0);
 }
+
+.rainbow { 
+  background: repeating-linear-gradient(
+    to right,
+    rgb(255, 36, 0),
+    rgb(232, 29, 29),
+    rgb(232, 183, 29),
+    rgb(227, 232, 29),
+    rgb(29, 232, 64),
+    rgb(29, 221, 232),
+    rgb(43, 29, 232),
+    rgb(221, 0, 243),
+    rgb(221, 0, 243)
+  );
+  background-size: 1800% 1800%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow 6s ease infinite;
+}
+
+@keyframes rainbow { 
+  0%,100% {
+      background-position: 0 0;
+  }
+
+  50% {
+      background-position: 100% 0;
+  }
+}
