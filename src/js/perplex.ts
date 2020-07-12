@@ -1,4 +1,6 @@
 import { html } from 'uhtml'
+
+// eslint-disable-next-line no-unused-vars
 import { ChatClient, PrivmsgMessage, UsernoticeMessage, ClearmsgMessage, ClearchatMessage } from 'dank-twitch-irc'
 import Random from './random'
 
