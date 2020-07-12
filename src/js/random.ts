@@ -1,16 +1,16 @@
-import Twister from './mersenne-twister'
+import Sfc32 from './sfc32'
 
 export default class Random {
-  private twister: Twister
+  private sfc32: Sfc32
 
-  constructor (seed: number) {
-    this.twister = new Twister(seed)
+  constructor (seed: string) {
+    this.sfc32 = new Sfc32(seed)
   }
 
   /** min inclusive, max exclusive */
   number = (min: number, max: number) => {
     max--
-    const rnd = this.twister.random()
+    const rnd = this.sfc32.number()
     const floored = Math.floor(rnd * (max - min + 1) + min)
     return floored
   }

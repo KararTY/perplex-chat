@@ -78,7 +78,7 @@ function displayMessage (msg: PrivmsgMessage | UsernoticeMessage) {
     const parent = document.getElementById('perplexchat').querySelector('.marquee')
 
     const date = msg.serverTimestamp
-    const seededRandom = new Random(date.getTime())
+    const seededRandom = new Random(String(date.getTime()))
 
     const { size, color, direction, y, duration } = seededRandom
     const sSize = size(isUsernotice)
