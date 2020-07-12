@@ -1,14 +1,10 @@
 /**
  * Yet another chaotic PRNG, the sfc stands for "Small Fast Counter". It is part of the PracRand PRNG test suite. It passes PractRand, as well as Crush/BigCrush (TestU01).
  *
- * From [github/michaeldzjap/rand-seed](https://github.com/michaeldzjap/rand-seed/blob/develop/src/Algorithms/Sfc32.ts)
+ * From [github/michaeldzjap/rand-seed](https://github.com/michaeldzjap/rand-seed/blob/develop/src/Algorithms/Sfc32.ts).
  */
 export default class Sfc32 {
-  /**
-   * Seed parameters.
-   *
-   * @var {number}
-   */
+  // Seed parameters.
   private _a: number
   private _b: number
   private _c: number
@@ -26,21 +22,28 @@ export default class Sfc32 {
     this._d = seed()
   }
 
-   xmur3 = (str: string) => {
-     for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++) {
-       h = Math.imul(h ^ str.charCodeAt(i), 3432918353)
-       h = h << 13 | h >>> 19
-     }
-     return function () {
-       h = Math.imul(h ^ h >>> 16, 2246822507)
-       h = Math.imul(h ^ h >>> 13, 3266489909)
-       return (h ^= h >>> 16) >>> 0
-     }
-   }
+  /**
+   * Based on MurmurHash3's mixing function.
+   *
+   * Each subsequent call to the return function of xmur3 produces a new "random" 32-bit hash value to be used as a seed in a PRNG.
+   *
+   * From [bryc/code/jshash](https://github.com/bryc/code/blob/master/jshash/PRNGs.md#addendum-a-seed-generating-functions).
+   */
+  xmur3 = (str: string) => {
+    for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++) {
+      h = Math.imul(h ^ str.charCodeAt(i), 3432918353)
+      h = h << 13 | h >>> 19
+    }
+    return function () {
+      h = Math.imul(h ^ h >>> 16, 2246822507)
+      h = Math.imul(h ^ h >>> 13, 3266489909)
+      return (h ^= h >>> 16) >>> 0
+    }
+  }
 
-   /**
-    * Generate a random number using the sfc32 algorithm.
-    */
+  /**
+   * Generate a random number using the sfc32 algorithm.
+   */
   number = () => {
     this._a >>>= 0; this._b >>>= 0; this._c >>>= 0; this._d >>>= 0
     let t = (this._a + this._b) | 0
