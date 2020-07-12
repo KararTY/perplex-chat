@@ -14,7 +14,8 @@ By changing the `?channel=<channel_name_goes_here>` part of the url, you connect
 ### What it uses
   * [dank-twitch-irc](https://github.com/robotty/dank-twitch-irc) for retrieving Twitch messages.
   * [uHTML](https://github.com/WebReflection/uhtml) for rendering HTML templates.
-  * [Mersenne Twister](https://gist.github.com/banksean/300494) for seeded randomization.
+  * [Sfc32](https://github.com/michaeldzjap/rand-seed/blob/develop/src/Algorithms/Sfc32.ts) for PRNG.
+  * [xmur3](https://github.com/bryc/code/blob/master/jshash/PRNGs.md#addendum-a-seed-generating-functions) for seeding the PRNG.
   * [node-sass](https://github.com/sass/node-sass) for stylesheet management.
   * [Parcel 2](https://github.com/parcel-bundler/parcel/) for packing the files for use in the browser.
 
@@ -34,4 +35,4 @@ By changing the `?channel=<channel_name_goes_here>` part of the url, you connect
     * Change font sizes.
     * Enable / Disable AutoMod filter (IDENTITY, AGGRESSIVE, SEXUAL, PROFANITY).
 
-Thanks to Twitch users `@idmgroup` & `@miaam` for the idea & inspiration.
+Thanks to Twitch users `@idmgroup` & `@miaam` for the inspiration & the original Wild Chat software for the idea.
