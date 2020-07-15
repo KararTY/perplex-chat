@@ -1,6 +1,6 @@
 {
   "name": "perplex-chat",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "private": true,
   "description": "Wild Chat Remake",
   "main": "dist/index.html",
@@ -14,8 +14,8 @@
   "author": "Karar Al-Remahy",
   "license": "MIT",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^3.6.0",
-    "@typescript-eslint/parser": "^3.6.0",
+    "@typescript-eslint/eslint-plugin": "^3.6.1",
+    "@typescript-eslint/parser": "^3.6.1",
     "eslint": "^7.4.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",

@@ -1,7 +1,7 @@
 import { html } from 'uhtml'
-
 // eslint-disable-next-line no-unused-vars
 import { ChatClient, PrivmsgMessage, UsernoticeMessage, ClearmsgMessage, ClearchatMessage } from 'dank-twitch-irc'
+
 import Random from './random'
 
 // This is a "Proof of Concept".
@@ -10,6 +10,12 @@ const urlParams = new URLSearchParams(window.location.search)
 
 const escapeRegExp = (text: string) => {
   return text.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&')
+}
+
+const escapeXML = (str: string) => {
+  return str
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
 }
 
 const channel = urlParams.get('channel') || 'harmfulopinions'
@@ -86,21 +92,25 @@ function displayMessage (msg: PrivmsgMessage | UsernoticeMessage) {
 
     const style = `top:${y(sSize)}px;font-size:${sSize}rem;${isUsernotice ? 'z-index:100;' : ''}`
     const event = ev => { ev.currentTarget.outerHTML = '' }
-    const msgText = (msg instanceof UsernoticeMessage ? (msg.messageText ? (`${msg.senderUsername}: ${msg.messageText}`) : msg.systemMessage) : msg.messageText)
+    const msgText = msg instanceof UsernoticeMessage
+      ? (msg.messageText ? `${msg.senderUsername}: ${msg.messageText}` : msg.systemMessage)
+      : msg.messageText
 
     const node = html.node`
       <div data-message="${msg.messageID}" data-user="${msg.senderUsername}" class="${`${direction()} ${dDuration}`}" onanimationend="${event}" style="${style}">
         <p class="${isUsernotice ? 'rainbow' : color()}">${msgText}</p>
-      </div>`
+      </div>
+    `
 
     if (msg.messageText != null) {
-    // Replace emotes with placeholders
+      // Replace emotes with placeholders
       const words = msg.messageText.split(' ')
       for (let index = 0; index < words.length; index++) {
         const word = words[index]
+        const wordEscaped = escapeXML(word)
 
         let url: string
-        const regex = new RegExp(escapeRegExp(word))
+        const regex = new RegExp(escapeRegExp(wordEscaped))
 
         const matchesTwitch = msg.emotes.find(emote => emote.code === word)
         const matchesFFZ = ffzEmotes.find(emote => emote.name === word)
