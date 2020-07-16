@@ -16,6 +16,7 @@ const escapeXML = (str: string) => {
   return str
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
+    .replace(/&/g, '&amp;')
 }
 
 const channel = urlParams.get('channel') || 'harmfulopinions'
