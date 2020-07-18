@@ -26,7 +26,7 @@ const bttvEmotes = []
 
 let loadedEmotes = false
 
-function getEmotes (channelId) {
+function getEmotes (channelId: string) {
   // All of these should be allowed to fail.
 
   fetch(`https://api.frankerfacez.com/v1/room/${channel}`).then(res => res.json()).then(res => {
@@ -58,7 +58,9 @@ const client = new ChatClient({
   }
 })
 
-client.on('ready', () => console.log('Successfully connected to chat'))
+client.on('372', msg => console.log(`Twitch IRC: ${msg.ircParameters.join(' ')}`))
+
+client.on('ready', () => console.log('Successfully connected to Twitch IRC.'))
 
 client.on('close', error => {
   if (error != null) {
