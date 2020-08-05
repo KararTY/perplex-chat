@@ -157,13 +157,13 @@ function deleteMessage (msg: ClearmsgMessage | ClearchatMessage) {
     if (msg.targetMessageID) {
       const node = document.querySelector(`[data-message="${msg.targetMessageID}"]`)
       if (node !== null) node.outerHTML = ''
-    } else if (msg.targetUsername) {
+    }
+  } else if (msg instanceof ClearchatMessage) {
+    if (msg.targetUsername) {
       document.querySelectorAll(`[data-user="${msg.targetUsername}"`).forEach(el => {
         el.outerHTML = ''
       })
-    }
-  } else if (msg instanceof ClearchatMessage) {
-    if (msg.wasChatCleared()) {
+    } else if (msg.wasChatCleared()) {
       document.querySelector('.marquee').innerHTML = ''
     }
   }

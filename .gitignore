@@ -1,12 +1,15 @@
 # Distribution files
-dist/**
+dist
 
 # Parcel 2 cache
-.parcel-cache/
+.parcel-cache
 
 # NodeJS modules
-node_modules/
+node_modules
 
 .env
 
 profile-1.trace
+
+# pnpm
+pnpm-lock.yaml
