@@ -13,3 +13,5 @@ profile-1.trace
 
 # pnpm
 pnpm-lock.yaml
+
+src/css/
