@@ -120,7 +120,7 @@ function displayMessage (msg: PrivmsgMessage | UsernoticeMessage) {
         const matchesBTTV = bttvEmotes.find(emote => emote.code === word)
 
         if (matchesTwitch != null) {
-          url = `//static-cdn.jtvnw.net/emoticons/v1/${matchesTwitch.id}/3.0`
+          url = `//static-cdn.jtvnw.net/emoticons/v2/${matchesTwitch.id}/default/dark/3.0`
         } else if (matchesFFZ != null) {
           const emoteUrls = Object.keys(matchesFFZ.urls).map(key => matchesFFZ.urls[key])
           url = emoteUrls[emoteUrls.length - 1]
