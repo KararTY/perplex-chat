@@ -1,6 +1,7 @@
-import { html } from 'uhtml'
+import { html } from 'uhtml/node'
+
 // eslint-disable-next-line no-unused-vars
-import { ChatClient, PrivmsgMessage, UsernoticeMessage, ClearmsgMessage, ClearchatMessage } from 'dank-twitch-irc'
+import { ChatClient, PrivmsgMessage, UsernoticeMessage, ClearmsgMessage, ClearchatMessage } from '@mastondzn/dank-twitch-irc'
 
 import Random from './random'
 
@@ -21,8 +22,8 @@ const escapeXML = (str: string) => {
 
 const channel = urlParams.get('channel') || 'harmfulopinions'
 
-const ffzEmotes = []
-const bttvEmotes = []
+const ffzEmotes: any[] = []
+const bttvEmotes: any[] = []
 
 let loadedEmotes = false
 
@@ -84,7 +85,11 @@ function displayMessage (msg: PrivmsgMessage | UsernoticeMessage) {
       return
     }
 
-    const parent = document.getElementById('perplexchat').querySelector('.marquee')
+    const parent = document.getElementById('perplexchat')?.querySelector('.marquee')
+
+    if (!parent) {
+      return
+    }
 
     const date = msg.serverTimestamp
     const seededRandom = new Random(String(date.getTime()))
@@ -98,12 +103,12 @@ function displayMessage (msg: PrivmsgMessage | UsernoticeMessage) {
     const msgText = msg instanceof UsernoticeMessage
       ? (msg.messageText ? `${msg.senderUsername}: ${msg.messageText}` : msg.systemMessage)
       : msg.messageText
-
-    const node = html.node`
-      <div data-message="${msg.messageID}" data-user="${msg.senderUsername}" class="${`${direction()} ${dDuration}`}" onanimationend="${event}" style="${style}">
+    
+    const node = html`
+      <div data-message="${msg.messageID}" data-user="${msg.senderUsername}" class="${`${direction()} ${dDuration}`}" onanimationend="${event as any}" style="${style}">
         <p class="${isUsernotice ? 'rainbow' : color()}">${msgText}</p>
       </div>
-    `
+    ` as HTMLDivElement;
 
     if (msg.messageText != null) {
       // Replace emotes with placeholders
@@ -112,7 +117,7 @@ function displayMessage (msg: PrivmsgMessage | UsernoticeMessage) {
         const word = words[index]
         const wordEscaped = escapeXML(word)
 
-        let url: string
+        let url: string = '';
         const regex = new RegExp(escapeRegExp(wordEscaped))
 
         const matchesTwitch = msg.emotes.find(emote => emote.code === word)
@@ -153,6 +158,7 @@ client.on('CLEARMSG', deleteMessage)
 client.on('CLEARCHAT', deleteMessage)
 
 function deleteMessage (msg: ClearmsgMessage | ClearchatMessage) {
+  const parent = document.querySelector('.marquee');
   if (msg instanceof ClearmsgMessage) {
     if (msg.targetMessageID) {
       const node = document.querySelector(`[data-message="${msg.targetMessageID}"]`)
@@ -163,8 +169,8 @@ function deleteMessage (msg: ClearmsgMessage | ClearchatMessage) {
       document.querySelectorAll(`[data-user="${msg.targetUsername}"`).forEach(el => {
         el.outerHTML = ''
       })
-    } else if (msg.wasChatCleared()) {
-      document.querySelector('.marquee').innerHTML = ''
+    } else if (msg.wasChatCleared() && parent) {
+      parent.innerHTML = ''
     }
   }
 }

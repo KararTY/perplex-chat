@@ -1,37 +1,41 @@
 {
   "name": "perplex-chat",
-  "version": "0.9.7",
+  "version": "0.10.0",
   "private": true,
   "description": "Wild Chat Remake",
-  "main": "dist/perplex-chat.html",
   "scripts": {
     "build": "rimraf dist && npm run build-css && npm run build-js",
     "build-js": "parcel build src/perplex-chat.html --detailed-report",
-    "build-css": "node-sass sass/stylesheet.scss src/css/stylesheet.css --output-style compressed",
-    "start": "npm run build && npm run python3-http-server",
-    "python3-http-server": "cd ./dist/ && python -m http.server",
+    "build-css": "sass sass/stylesheet.scss src/css/stylesheet.css ",
+    "start": "npm run build && npm run preview",
+    "preview": "cd ./dist/ && npx sirv --single perplex-chat.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Karar Al-Remahy",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@typescript-eslint/eslint-plugin": "^4.3.0",
-    "@typescript-eslint/parser": "^4.3.0",
-    "eslint": "^7.10.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.1",
+    "@babel/core": "^7.28.0",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "buffer": "^6.0.3",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "parcel": "^2.0.0-nightly.415",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.0.3"
+    "eslint-plugin-promise": "^6.6.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "events": "^3.3.0",
+    "parcel": "^2.15.4",
+    "process": "^0.11.10",
+    "rimraf": "^6.0.1",
+    "sass": "^1.89.2",
+    "sirv-cli": "^3.0.1",
+    "stream-browserify": "^3.0.0",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@types/node": "^14.11.2",
-    "dank-twitch-irc": "^4.1.0",
-    "node-sass": "^4.14.1",
-    "uhtml": "^2.1.2"
+    "@mastondzn/dank-twitch-irc": "^7.2.1",
+    "@types/node": "^24.0.13",
+    "uhtml": "^4.7.1"
   }
 }
