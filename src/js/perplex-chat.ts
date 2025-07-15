@@ -24,6 +24,7 @@ const channel = urlParams.get('channel') || 'harmfulopinions'
 
 const ffzEmotes: any[] = []
 const bttvEmotes: any[] = []
+const sevenTVEmotes: any[] = []
 
 let loadedEmotes = false
 
@@ -49,6 +50,10 @@ function getEmotes (channelId: string) {
       bttvEmotes.push(...res.sharedEmotes)
       bttvEmotes.push(...res.channelEmotes)
     }
+  })
+
+  fetch(`https://7tv.io/v3/users/twitch/${channelId}`).then(res => res.json()).then(res => {
+    sevenTVEmotes.push(...res.emote_set.emotes)
   })
 }
 
@@ -103,12 +108,12 @@ function displayMessage (msg: PrivmsgMessage | UsernoticeMessage) {
     const msgText = msg instanceof UsernoticeMessage
       ? (msg.messageText ? `${msg.senderUsername}: ${msg.messageText}` : msg.systemMessage)
       : msg.messageText
-    
+
     const node = html`
       <div data-message="${msg.messageID}" data-user="${msg.senderUsername}" class="${`${direction()} ${dDuration}`}" onanimationend="${event as any}" style="${style}">
         <p class="${isUsernotice ? 'rainbow' : color()}">${msgText}</p>
       </div>
-    ` as HTMLDivElement;
+    ` as HTMLDivElement
 
     if (msg.messageText != null) {
       // Replace emotes with placeholders
@@ -117,12 +122,13 @@ function displayMessage (msg: PrivmsgMessage | UsernoticeMessage) {
         const word = words[index]
         const wordEscaped = escapeXML(word)
 
-        let url: string = '';
+        let url: string = ''
         const regex = new RegExp(escapeRegExp(wordEscaped))
 
         const matchesTwitch = msg.emotes.find(emote => emote.code === word)
         const matchesFFZ = ffzEmotes.find(emote => emote.name === word)
         const matchesBTTV = bttvEmotes.find(emote => emote.code === word)
+        const matchesSevenTV = sevenTVEmotes.find(emote => emote.name === word)
 
         if (matchesTwitch != null) {
           url = `//static-cdn.jtvnw.net/emoticons/v2/${matchesTwitch.id}/default/dark/3.0`
@@ -131,6 +137,8 @@ function displayMessage (msg: PrivmsgMessage | UsernoticeMessage) {
           url = emoteUrls[emoteUrls.length - 1]
         } else if (matchesBTTV != null) {
           url = `//cdn.betterttv.net/emote/${matchesBTTV.id}/3x`
+        } else if (matchesSevenTV != null) {
+          url = `//cdn.7tv.app/emote/${matchesSevenTV.id}/3x`
         }
 
         if (url) {
@@ -158,7 +166,7 @@ client.on('CLEARMSG', deleteMessage)
 client.on('CLEARCHAT', deleteMessage)
 
 function deleteMessage (msg: ClearmsgMessage | ClearchatMessage) {
-  const parent = document.querySelector('.marquee');
+  const parent = document.querySelector('.marquee')
   if (msg instanceof ClearmsgMessage) {
     if (msg.targetMessageID) {
       const node = document.querySelector(`[data-message="${msg.targetMessageID}"]`)
