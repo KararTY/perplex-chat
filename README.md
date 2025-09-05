@@ -1,5 +1,7 @@
 # Perplex Chat
 
+[Demo](https://remahy.com/perplex-chat/?channel=twitchmedia_qs_10) (Tip: Change `?channel=` value in URL to another livestreamer, or append `&noembed` in URL to disable the live video.)
+
 ## Remake of Wild Chat
 
 ### What it does
